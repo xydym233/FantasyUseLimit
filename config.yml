@@ -1,0 +1,155 @@
+#
+# 作者：虚影的幽默
+# V5.5 更新时间: 2024.8.20
+# 修复玩家实体被失误删除
+
+# 全新丢弃保护功能
+
+# 插件禁止二次修改后发布
+# 强大的兼容性 与 强大的限制力量！
+# 注意：为了保证插件有效，修改配置文件前请先关服！！！！
+###################################
+
+
+# 移动速度限制
+walk-speed-limit: 4.5
+# 飞行速度限制
+fly-speed-limit: 4.5
+# 玩家垂直移动限制（摔落速度等不懂别改）
+vertical-speed-limit: 10
+
+
+
+# 单区块最大实体数
+ChunkEntityLimiter: 60
+# 哪个世界不进行区块实体限制
+# 空岛世界已经使用 Askyblockexmax 进行限制
+not_world:
+  - "ASkyBlock"
+  - "zcsj"
+
+
+# 方块检查 需要指定数据值 如果物品没有数据值请结尾写:*
+# 只支持大写
+#当前监听器只在特殊情况下启用
+#------------------------
+banblock:
+  - THAUMCRAFT_BLOCKMIRROR:*  #魔镜
+  - PISTON_BASE:*  #活塞
+  - PISTON_STICKY_BASE:*  #粘性活塞
+  - DISPENSER:*  #发射器
+  - DROPPER:*  #投掷器
+  - TWILIGHTFOREST_TILETFMAGICLOGSPECIAL:*  #时光树核心
+
+# 方块检测启用的世界
+on-banblock-world:
+  - ASkyBlock
+#------------------------
+
+
+# 玩家交互速率
+clickInterval: 90
+# 玩家发射物品速率
+shootInterval: 100
+
+# 爆炸保护
+NotExplodeKG: true
+# 自动重生开关
+AutoRebirthKG: true
+# 是否自动重生后黑屏几秒
+AutoRebirthSM: true
+
+# 丢弃保护lore 玩家可以输入 /fcq 指令，保护不想要意外丢弃的物品
+# 请勿修改丢弃保护这四个字！颜色与前后缀可以随便改！
+drop_protection_keyword: "§6§l丢弃保护§a+"
+
+
+#-----------------------------------
+
+
+# 附魔最高上限
+Enchantment_cap:
+  - PROTECTION_ENVIRONMENTAL|4 # 保护
+  - PROTECTION_FIRE|4 # 火焰保护
+  - PROTECTION_FALL|4 # 摔落保护
+  - PROTECTION_EXPLOSIONS|4 # 爆炸保护
+  - PROTECTION_PROJECTILE|4 # 弹射物保护
+  - OXYGEN|3 # 水下呼吸
+  - WATER_WORKER|1 # 水下速掘
+  - THORNS|3 # 荆棘
+  - DAMAGE_ALL|5 # 锋利
+  - DAMAGE_UNDEAD|5 # 亡灵杀手
+  - DAMAGE_ARTHROPODS|5 # 节肢杀手
+  - KNOCKBACK|2 # 击退
+  - FIRE_ASPECT|2 # 火焰附加
+  - LOOT_BONUS_MOBS|3 # 抢夺
+  - DIG_SPEED|5 # 效率
+  - SILK_TOUCH|1 # 精准采集
+  - DURABILITY|3 # 耐久
+  - LOOT_BONUS_BLOCKS|3 # 时运
+  - ARROW_DAMAGE|5 # 力量
+  - ARROW_KNOCKBACK|2 # 冲击
+  - ARROW_FIRE|1 # 火矢
+  - ARROW_INFINITE|1 # 无限
+  - LURE|3 # 饵钓
+  - LUKE|3 # 海之眷顾
+  - REPAIR|2 # 修复 神秘时代
+  - HASTE|3 # 急迫 神秘时代
+
+# 如果附魔上限未在Enchantment_cap设置那么他的最大等级限制为
+OTHEREnchantment: 5
+# 特定物品的附魔上限
+# 已设置拔刀附魔上限 防止合成的拔刀被清理附魔
+Enchantment_Break:
+  - "FLAMMPFEILSLASHBLADE_SLASHBLADENAMED|ARROW_DAMAGE:10,DURABILITY:10,DAMAGE_ALL:12,FIRE_ASPECT:7,DAMAGE_UNDEAD:18,THORNS:10,KNOCKBACK:7,LOOT_BONUS_MOBS:4,PROTECTION_FALL:5,SILK_TOUCH:6,ARROW_INFINITE:4,DAMAGE_ARTHROPODS:5,DIG_SPEED:3,ARROW_KNOCKBACK:5,LOOT_BONUS_BLOCKS:5"
+  - "GRAVISUITE_ADVDDRILL|DIG_SPEED:0,SILK_TOUCH:0"
+  - "LASTSMITH_BLADE_XF|ARROW_DAMAGE:6,DAMAGE_ALL:7,ARROW_KNOCKBACK:5,DAMAGE_UNDEAD:12"
+
+
+
+#-----------------------------------
+# 开服多少秒数后执行
+Startcommandstime: 10
+# 开服自动给所有世界增加死亡不掉落
+EnableKeepInventory: true
+# 开服需要执行的指令列表 (例如修复全息字体！)
+#  - whitelist off #开服后关闭白名单 用于修复关服玩家进入的bug
+Startcommands:
+  - hd reload
+
+# 防止加速火把大面积仙人掌农场卡服
+# 禁止仙人掌农场的世界(自动删除生长的仙人掌)
+# 不建议在资源世界使用，会导致仙人掌消失！
+NoCactusWorld:
+  - ASkyBlock
+
+
+# 需要强制清理哪些实体（包含飞行物，生物等特殊实体）
+unknown-entities:
+  - FLAMMPFEIL.SLASHBLADE.EXSA_LIGHTNINGSWORD2
+  - FLAMMPFEIL.SLASHBLADE.EXSA_PHANTOMSWORDEXK2
+  - THAUMCRAFT_ASPECTORB
+
+
+
+#-----------------------------------
+# 修复扳手配合活塞强拆功能
+FixWrenchKG: true
+# 禁止扳手右键的方块 （默认添加为活塞修复活塞配合扳手强拆）
+FixWrenchBlock:
+  - '29'
+  - '33'
+
+# 扳手
+FixWrenchID:
+  # 工业扳手
+  - 'IC2:itemToolWrench'
+  - 'IC2:itemToolWrenchElectric'
+  - 'GraviSuite:graviTool'
+  # AE2扳手
+  - 'appliedenergistics2:item.ToolCertusQuartzWrench'
+  - 'appliedenergistics2:item.ToolNetherQuartzWrench'
+
+
+FixWrenchMessage: '§4>> §a此方块禁止使用扳手右键'
+#-----------------------------------
