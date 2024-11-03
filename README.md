@@ -24,27 +24,35 @@
 
 
 指令:
+
   fcq:
     description: 添加或删除丢弃保护
     usage: /fcq <yes/no>
+    
   fcname:
     description: 显示当前手持物品的类型
     usage: /fcname
+    
   fcblock:
     description: 显示右键方块的id
     usage: /fcblock
+    
   fcitemname:
     description: 修改手持的物品名
     usage: /fcitemname <名字>
+    
   fcenchant:
     description: 删除附魔
     usage: /fcenchant <附魔名>
+    
   fcshow:
     description: 展示玩家手持的物品
     usage: /fcshow
+    
   fcshow_open:
     description: 查看玩家展示的物品
     usage: /fcshow_open <玩家>
+    
   fcwxnj:
     description: 设置手持物品为无法破坏
     usage: /fcwxnj
