@@ -33,6 +33,7 @@ public class AntiSpeedListener implements Listener {
         Location from = event.getFrom();
         Location to = event.getTo();
 
+
         if (to == null) return;
 
         // 检查玩家是否为OP

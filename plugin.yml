@@ -19,7 +19,7 @@ commands:
     description: 修改手持的物品名
     usage: /fcitemname <名字>
   fcenchant:
-    description: 修改手持的物品名
+    description: 添加手持物品的附魔
     usage: /fcenchant <附魔名>
   fcshow:
     description: 展示玩家手持的物品

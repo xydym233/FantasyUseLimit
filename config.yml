@@ -10,11 +10,10 @@
 # 注意：为了保证插件有效，修改配置文件前请先关服！！！！
 ###################################
 
-
 # 移动速度限制
-walk-speed-limit: 4.5
+walk-speed-limit: 5.0
 # 飞行速度限制
-fly-speed-limit: 4.5
+fly-speed-limit: 5.0
 # 玩家垂直移动限制（摔落速度等不懂别改）
 vertical-speed-limit: 10
 
