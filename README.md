@@ -19,6 +19,8 @@
 依赖的前置:
   - Vault
   - ProtocolLib
+
+
 指令:
   fcq:
     description: 添加或删除丢弃保护
