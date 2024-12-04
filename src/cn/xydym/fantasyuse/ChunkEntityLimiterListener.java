@@ -3,6 +3,7 @@ package cn.xydym.fantasyuse;
 import org.bukkit.Chunk;
 import org.bukkit.World;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -45,8 +46,8 @@ public class ChunkEntityLimiterListener {
 
         if (entityCount > chunkEntityLimit) {
             for (Entity entity : entities) {
-                if (entity instanceof Player) {
-                    continue; // 跳过玩家实体
+                if (entity instanceof Player || entity instanceof Item) {
+                    continue; // 跳过玩家实体和掉落物
                 }
                 entity.remove();
             }

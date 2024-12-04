@@ -20,36 +20,35 @@ public class FixWrench implements Listener {
 
     @EventHandler
     public void onPlayerInteract(PlayerInteractEvent event) {
-        if (this.javaPlugin.getConfig().getBoolean("FixWrenchKG", true)) {
-            Player player = event.getPlayer();
-            if (event.getAction() == Action.RIGHT_CLICK_BLOCK) {
-                Material blockType = event.getClickedBlock().getType();
-                List<String> fnubList = this.javaPlugin.getConfig().getStringList("FixWrenchBlock");
-                Iterator var5 = fnubList.iterator();
+        // 移除了对 FixWrenchKG 的检查
+        Player player = event.getPlayer();
+        if (event.getAction() == Action.RIGHT_CLICK_BLOCK) {
+            Material blockType = event.getClickedBlock().getType();
+            List<String> fnubList = this.javaPlugin.getConfig().getStringList("FixWrenchBlock");
+            Iterator var5 = fnubList.iterator();
 
-                while(true) {
-                    Material fnubMaterial;
-                    do {
-                        if (!var5.hasNext()) {
-                            return;
-                        }
+            while(true) {
+                Material fnubMaterial;
+                do {
+                    if (!var5.hasNext()) {
+                        return;
+                    }
 
-                        String fnubString = (String)var5.next();
-                        fnubMaterial = Material.matchMaterial(fnubString);
-                    } while(blockType != fnubMaterial);
+                    String fnubString = (String)var5.next();
+                    fnubMaterial = Material.matchMaterial(fnubString);
+                } while(blockType != fnubMaterial);
 
-                    ItemStack item = player.getItemInHand();
-                    List<String> nobanshouList = this.javaPlugin.getConfig().getStringList("FixWrenchID");
-                    Iterator var10 = nobanshouList.iterator();
+                ItemStack item = player.getItemInHand();
+                List<String> nobanshouList = this.javaPlugin.getConfig().getStringList("FixWrenchID");
+                Iterator var10 = nobanshouList.iterator();
 
-                    while(var10.hasNext()) {
-                        String nobanshouString = (String)var10.next();
-                        Material nobanshouMaterial = Material.matchMaterial(nobanshouString);
-                        if (item.getType() == nobanshouMaterial) {
-                            player.sendMessage(this.javaPlugin.getConfig().getString("FixWrenchMessage"));
-                            event.setCancelled(true);
-                            return;
-                        }
+                while(var10.hasNext()) {
+                    String nobanshouString = (String)var10.next();
+                    Material nobanshouMaterial = Material.matchMaterial(nobanshouString);
+                    if (item.getType() == nobanshouMaterial) {
+                        player.sendMessage(this.javaPlugin.getConfig().getString("FixWrenchMessage"));
+                        event.setCancelled(true);
+                        return;
                     }
                 }
             }

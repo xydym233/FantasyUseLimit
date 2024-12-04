@@ -11,16 +11,14 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.plugin.Plugin;
 
-
 // 当前监听器只在特殊情况下启用
 // 当前监听器只在特殊情况下启用
 // 当前监听器只在特殊情况下启用
 
 public class PlayerMoveListener implements Listener {
     private final Map<Material, String> bannedBlocks = new HashMap<>();
-    private final int checkRange = 3;
+    private final int checkRange = 6;
     private final Plugin plugin;
-    private final List<String> banBlockWorlds;
 
     public PlayerMoveListener(Plugin plugin) {
         this.plugin = plugin;
@@ -38,17 +36,11 @@ public class PlayerMoveListener implements Listener {
                 plugin.getLogger().warning("配置文件格式错误: " + config);
             }
         }
-        this.banBlockWorlds = plugin.getConfig().getStringList("on-banblock-world");
     }
 
     @EventHandler
     public void onPlayerMove(PlayerMoveEvent event) {
         Player player = event.getPlayer();
-        String worldName = player.getWorld().getName();
-
-        if (!banBlockWorlds.contains(worldName)) {
-            return;
-        }
 
         if (event.getFrom().getBlockX() == event.getTo().getBlockX() &&
                 event.getFrom().getBlockY() == event.getTo().getBlockY() &&

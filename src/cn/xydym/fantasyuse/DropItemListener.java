@@ -8,6 +8,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
@@ -41,8 +42,24 @@ public class DropItemListener implements Listener {
             ItemMeta meta = item.getItemMeta();
             if (meta != null && meta.hasLore()) {
                 List<String> lore = meta.getLore();
+                boolean hasDropProtection = false;
                 for (String line : lore) {
                     if (ChatColor.stripColor(line).contains("丢弃保护")) {
+                        hasDropProtection = true;
+                        break;
+                    }
+                }
+
+                if (hasDropProtection) {
+                    if (player.getInventory().firstEmpty() == -1) { // 检查背包是否已满
+                        if (addEnderChestItem(player, item)) { // 尝试将物品放入末影箱
+                            player.sendMessage(ChatColor.GREEN + "你的背包满了！物品已放入末影箱");
+                            event.setCancelled(true);
+                            return;
+                        } else { // 末影箱也满了
+                            player.sendMessage(ChatColor.RED + "末影箱已满，物品无法放入末影箱，已正常丢出");
+                        }
+                    } else {
                         player.sendMessage(ChatColor.RED + "你不能丢弃这个物品，因为它有丢弃保护！");
                         event.setCancelled(true);
                         return;
@@ -56,5 +73,14 @@ public class DropItemListener implements Listener {
                 dropCountMap.put(playerId, dropCount + 1);
             }
         }
+    }
+
+    private boolean addEnderChestItem(Player player, ItemStack item) {
+        Inventory enderChest = player.getEnderChest();
+        if (enderChest.firstEmpty() != -1) { // 检查末影箱是否有空位
+            enderChest.addItem(item);
+            return true;
+        }
+        return false;
     }
 }

@@ -26,30 +26,39 @@ public class EntityProjectileListener implements Listener {
         new BukkitRunnable() {
             @Override
             public void run() {
-                plugin.getServer().getWorlds().forEach(world ->
-                        world.getEntities().stream()
-                                .filter(entity -> !(entity instanceof Player))
-                                .forEach(entity -> {
-                                    if (isUnknownEntity(entity) || isProjectile(entity)) {
-                                        entityTimers.putIfAbsent(entity, 3);
-                                    }
-                                })
-                );
-
-                entityTimers.entrySet().removeIf(entry -> {
-                    int newTime = entry.getValue() - 1;
-                    if (newTime <= 0 && (isUnknownEntity(entry.getKey()) || isProjectile(entry.getKey()))) {
-                        entry.getKey().remove();
-                        return true;
-                    } else if (newTime <= 0) {
-                        return true;
-                    } else {
-                        entityTimers.put(entry.getKey(), newTime);
-                        return false;
-                    }
-                });
+                updateEntityTimers();
+                removeExpiredEntities();
             }
         }.runTaskTimer(plugin, 0L, 20L);
+    }
+
+    private void updateEntityTimers() {
+        plugin.getServer().getWorlds().forEach(world ->
+                world.getEntities().stream()
+                        .filter(entity -> !(entity instanceof Player))
+                        .filter(this::isTargetEntity)
+                        .forEach(entity -> entityTimers.putIfAbsent(entity, 3))
+        );
+    }
+
+    private void removeExpiredEntities() {
+        entityTimers.entrySet().removeIf(entry -> {
+            int newTime = entry.getValue() - 1;
+            Entity entity = entry.getKey();
+            if (newTime <= 0 && isTargetEntity(entity)) {
+                entity.remove();
+                return true;
+            } else if (newTime <= 0) {
+                return true;
+            } else {
+                entityTimers.put(entity, newTime);
+                return false;
+            }
+        });
+    }
+
+    private boolean isTargetEntity(Entity entity) {
+        return isUnknownEntity(entity) || isProjectile(entity);
     }
 
     private boolean isUnknownEntity(Entity entity) {

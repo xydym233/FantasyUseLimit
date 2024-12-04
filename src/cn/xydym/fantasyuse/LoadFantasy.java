@@ -13,9 +13,10 @@ import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.World;
+
 public class LoadFantasy extends JavaPlugin implements Listener, TabCompleter {
 
-
+    @Override
     public void onEnable() {
         saveDefaultConfig();
         getConfig().options().copyDefaults(true);
@@ -26,6 +27,8 @@ public class LoadFantasy extends JavaPlugin implements Listener, TabCompleter {
         int delayMinutes = config.getInt("Startcommandstime");
         List<String> commands = config.getStringList("Startcommands");
         boolean enableKeepInventory = config.getBoolean("EnableKeepInventory", false);
+        // 是否打开 PlayerMoveListener 监听器
+        boolean openBanBlock = config.getBoolean("OPENbanblock", false); // 读取 OPENbanblock 配置
 
         Bukkit.getScheduler().runTaskLater(this, () -> {
             Iterator var1 = commands.iterator();
@@ -45,7 +48,6 @@ public class LoadFantasy extends JavaPlugin implements Listener, TabCompleter {
             }
 
         }, (long) delayMinutes * 20L);
-
 
         // 丢弃保护功能
         this.getCommand("fcq").setExecutor(new FCQCommandExecutor(this));
@@ -69,11 +71,16 @@ public class LoadFantasy extends JavaPlugin implements Listener, TabCompleter {
         this.getCommand("fcblock").setExecutor(new BlockHandler());
         getServer().getPluginManager().registerEvents(new BlockHandler(), this);
 
-        // 玩家移动检查周围是否存在禁用的方块 只在极端情况下启用！！！
-         getServer().getPluginManager().registerEvents(new PlayerMoveListener(this), this);
+        // 玩家移动检查周围是否存在禁用的方块
+        if (openBanBlock) { // 检查 OPENbanblock 是否为 true
+            getServer().getPluginManager().registerEvents(new PlayerMoveListener(this), this);
+            Bukkit.getLogger().info("FantasyUseLimit：高占用的方块监控者已启动！");
+        }
 
         // 区块实体限制
         new ChunkEntityLimiterListener(this);
+
+
 
         this.getServer().getPluginManager().registerEvents(new AntiSpeedListener(this), this);
         this.getServer().getPluginManager().registerEvents(new EnchantmentLimitListener(this), this);
@@ -84,12 +91,12 @@ public class LoadFantasy extends JavaPlugin implements Listener, TabCompleter {
         this.getServer().getPluginManager().registerEvents(new NotExplode(this), this);
         this.getServer().getPluginManager().registerEvents(new EntityProjectileListener(this), this);
 
-
-        Bukkit.getLogger().info("FantasyUseLimit插件加载完成！！幻想世界MC服务器群 - 634882525");
+        Bukkit.getLogger().info("FantasyUseLimit：功能已全部加载完成，高占用功能已提示！");
 
         // 关服踢出玩家的白名单设置
     }
 
+    @Override
     public void onDisable() {
         // 注销所有与当前插件相关的事件处理器
         HandlerList.unregisterAll((Plugin) this);

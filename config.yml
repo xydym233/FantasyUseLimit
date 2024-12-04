@@ -1,7 +1,7 @@
 #
 # 作者：虚影的幽默
-# V5.5 更新时间: 2024.8.20
-# 修复玩家实体被失误删除
+# V5.6 更新时间: 2024.12.4
+# 增加对丢弃保护的额外功能
 
 # 全新丢弃保护功能
 
@@ -21,17 +21,18 @@ vertical-speed-limit: 10
 
 # 单区块最大实体数
 ChunkEntityLimiter: 60
-# 哪个世界不进行区块实体限制
-# 空岛世界已经使用 Askyblockexmax 进行限制
+# 哪个世界不进行区块实体限制，空岛世界请使用 Askyblockexmax 进行限制
 not_world:
   - "ASkyBlock"
   - "zcsj"
 
 
-# 方块检查 需要指定数据值 如果物品没有数据值请结尾写:*
-# 只支持大写
-#当前监听器只在特殊情况下启用
-#------------------------
+# 方块监控者
+# 本功能会检查玩家周围6x6x6的所有方块是否存在在ban列表中，此功能性能占用比较大
+# 功能开关 true为开启 false 为关闭
+OPENbanblock: false
+# 要监控并清除的方块列表格式为
+# 方块id:数据值 如果物品没数据值请写 方块id:*
 banblock:
   - THAUMCRAFT_BLOCKMIRROR:*  #魔镜
   - PISTON_BASE:*  #活塞
@@ -39,10 +40,9 @@ banblock:
   - DISPENSER:*  #发射器
   - DROPPER:*  #投掷器
   - TWILIGHTFOREST_TILETFMAGICLOGSPECIAL:*  #时光树核心
+  - ENDER_PORTAL_FRAME:*  #末地框架
 
-# 方块检测启用的世界
-on-banblock-world:
-  - ASkyBlock
+
 #------------------------
 
 
@@ -132,8 +132,6 @@ unknown-entities:
 
 
 #-----------------------------------
-# 修复扳手配合活塞强拆功能
-FixWrenchKG: true
 # 禁止扳手右键的方块 （默认添加为活塞修复活塞配合扳手强拆）
 FixWrenchBlock:
   - '29'

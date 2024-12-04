@@ -19,8 +19,8 @@ public class AntiSpeedListener implements Listener {
         this.plugin = plugin;
         // 直接在构造函数中加载配置
         FileConfiguration config = plugin.getConfig();
-        walkSpeedLimit = config.getDouble("walk-speed-limit", 0.7);
-        flySpeedLimit = config.getDouble("fly-speed-limit", 1.0);
+        walkSpeedLimit = config.getDouble("walk-speed-limit", 5.0);
+        flySpeedLimit = config.getDouble("fly-speed-limit", 5.5);
         verticalSpeedLimit = config.getDouble("vertical-speed-limit", 10.0);
         // 加载垂直移动速度限制
     }
