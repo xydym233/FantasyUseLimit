@@ -30,3 +30,6 @@ commands:
   fcwxnj:
     description: 设置手持物品为无法破坏
     usage: /fcwxnj
+  titleall:
+    description: 向所有在线玩家发送标题消息
+    usage: /titleall <标题内容>

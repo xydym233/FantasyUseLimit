@@ -8,13 +8,14 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.World;
 
 public class LoadFantasy extends JavaPlugin implements Listener, TabCompleter {
+
+    private MVPCheckListener mvpCheckListener;
+
 
     @Override
     public void onEnable() {
@@ -28,7 +29,9 @@ public class LoadFantasy extends JavaPlugin implements Listener, TabCompleter {
         List<String> commands = config.getStringList("Startcommands");
         boolean enableKeepInventory = config.getBoolean("EnableKeepInventory", false);
         // 是否打开 PlayerMoveListener 监听器
-        boolean openBanBlock = config.getBoolean("OPENbanblock", false); // 读取 OPENbanblock 配置
+        boolean openBanBlock1 = config.getBoolean("OPENbanblock", false); // 读取 OPENbanblock 配置
+        boolean antispeedjoin1 = config.getBoolean("AntiSpeedjoin", true); // 读取 AntiSpeedjoin 配置
+
 
         Bukkit.getScheduler().runTaskLater(this, () -> {
             Iterator var1 = commands.iterator();
@@ -62,24 +65,26 @@ public class LoadFantasy extends JavaPlugin implements Listener, TabCompleter {
         this.getCommand("fcshow_open").setExecutor(new FCShowOpenCommand());
         // 注册事件监听器
         getServer().getPluginManager().registerEvents(new FCShowListener(), this);
-
         // 无限耐久指令
         this.getCommand("fcwxnj").setExecutor(new FCWXNJCommand());
-
         // 查看方块与物品id
         this.getCommand("fcname").setExecutor(new ItemIdQuery());
         this.getCommand("fcblock").setExecutor(new BlockHandler());
         getServer().getPluginManager().registerEvents(new BlockHandler(), this);
+        // 向所有玩家发送标题消息
+        this.getCommand("titleall").setExecutor(new TitleAllCommandExecutor());
+
 
         // 玩家移动检查周围是否存在禁用的方块
-        if (openBanBlock) { // 检查 OPENbanblock 是否为 true
+        if (openBanBlock1) { // 检查 OPENbanblock 是否为 true
             getServer().getPluginManager().registerEvents(new PlayerMoveListener(this), this);
             Bukkit.getLogger().info("FantasyUseLimit：高占用的方块监控者已启动！");
         }
-
         // 区块实体限制
         new ChunkEntityLimiterListener(this);
 
+        // 修复拔刀强化插件的bug
+        getServer().getPluginManager().registerEvents(new AnvilListener(), this);
 
 
         this.getServer().getPluginManager().registerEvents(new AntiSpeedListener(this), this);
@@ -90,8 +95,19 @@ public class LoadFantasy extends JavaPlugin implements Listener, TabCompleter {
         this.getServer().getPluginManager().registerEvents(new FixWrench(this), this);
         this.getServer().getPluginManager().registerEvents(new NotExplode(this), this);
         this.getServer().getPluginManager().registerEvents(new EntityProjectileListener(this), this);
+        // 以下为玩法小功能
+        // 倒霉蛋玩法:
+        this.getServer().getPluginManager().registerEvents(new UnluckyPlayerListener(this), this);
 
-        Bukkit.getLogger().info("FantasyUseLimit：功能已全部加载完成，高占用功能已提示！");
+        Bukkit.getLogger().info("FantasyUseLimit：功能已全部加载完成");
+
+        // 注册 MVPCheckListener
+        mvpCheckListener = new MVPCheckListener(this);
+        getServer().getPluginManager().registerEvents(mvpCheckListener, this);
+
+        // 启动 MVP 检查任务
+        mvpCheckListener.startMVPCheckTask();
+
 
         // 关服踢出玩家的白名单设置
     }
@@ -99,7 +115,7 @@ public class LoadFantasy extends JavaPlugin implements Listener, TabCompleter {
     @Override
     public void onDisable() {
         // 注销所有与当前插件相关的事件处理器
-        HandlerList.unregisterAll((Plugin) this);
+        // HandlerList.unregisterAll((Plugin) this);
         this.getLogger().info(ChatColor.RED + "FantasyUseLimit已经卸载");
     }
 }
